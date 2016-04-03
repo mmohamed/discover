@@ -88,6 +88,8 @@ extern "C" void __cxa_pure_virtual() {;}
 #include <..\MyProject\Application.h>
 #include <..\MyProject\Battery.cpp>
 #include <..\MyProject\Battery.h>
+#include <..\MyProject\Bluetooth.cpp>
+#include <..\MyProject\Bluetooth.h>
 #include <..\MyProject\Car.cpp>
 #include <..\MyProject\Car.h>
 #include <..\MyProject\CommandServoTask.cpp>

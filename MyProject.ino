@@ -8,6 +8,7 @@
 #include "IR.h"
 #include "Battery.h"
 #include "Car.h"
+#include "Bluetooth.h"
 
 Application app;
 
@@ -16,7 +17,7 @@ Ultrasound *leftUltrasound;
 Ultrasound *rightUltrasound;
 
 IR *frontObstacle;
-IR *backObstacle;
+//IR *backObstacle;
 
 ScreenTask *screen;
 
@@ -26,6 +27,8 @@ ScreenTask *screen;
 
 Battery *battery;
 Car *car;
+
+Bluetooth *bridge;
 
 void setup() {
 
@@ -42,11 +45,12 @@ void setup() {
 	rightUltrasound = new Ultrasound(5, 47, 46);
 	leftUltrasound = new Ultrasound(5, 49, 48);
 
-	backObstacle = new IR(50);
+	//backObstacle = new IR(50);
 	frontObstacle = new IR(51);
 
 	battery = new Battery(1000, A7);
 	car = new Car();
+	bridge = new Bluetooth(50);
 
 	screen->start();
 	//led->start();
@@ -59,11 +63,11 @@ void setup() {
 	leftUltrasound->start();
 
 	frontObstacle->start();
-	backObstacle->start();
-
+	//backObstacle->start();
 
 	battery->start();
 	car->start();
+	bridge->start();
 
 	app.registerDebugger(screen);
 
@@ -76,11 +80,15 @@ void setup() {
 	app.registerTask(rightUltrasound);
 	app.registerTask(leftUltrasound);
 	app.registerTask(frontObstacle);
-	app.registerTask(backObstacle);
+	//app.registerTask(backObstacle);
 	app.registerTask(battery);
 	app.registerTask(car);
+	app.registerTask(bridge);
 
 	screen->println("Init all service.......OK");
+
+	// disable auto-flush before loop
+	screen->setAutoFlush(false);
 }
 
 void loop() {
@@ -88,7 +96,31 @@ void loop() {
 
 	print();
 
-	process();
+	//process();
+
+	processWithBridge();
+}
+
+void processWithBridge()
+{
+	if (bridge->get() != ""){ // has command
+		String command = bridge->get();
+		command.toUpperCase();
+		command.trim();
+
+		if (command == "GO"){
+			bridge->set("Go");
+			car->forward(FAST, 1000);
+		}
+		else if (command == "BACK"){
+			bridge->set("Back");
+			car->backward(FAST, 1000);
+		}
+		else{
+			car->stop();
+			bridge->set("unknown command ! => "+command);
+		}
+	}
 }
 
 /*
@@ -105,7 +137,7 @@ void process(){
 	long mesure = min(frontMesure, rightMesure);
 	mesure = min(mesure, leftMesure);
 
-	if (!car->onRotation() && mesure == 99999999){
+	if ((!car->onRotation() && mesure == 99999999) || frontObstacle->isDetect()){
 		car->stop();
 	}
 	else{
@@ -168,12 +200,13 @@ void print(){
 		screen->print("[FrontIR]..............NO", 4);
 	}
 
-	if (backObstacle->isDetect()){
+	/*if (backObstacle->isDetect()){
 		screen->print("[BackIR]..............YES", 5);
 	}
 	else{
 		screen->print("[BackIR]...............NO", 5);
-	}
+	}*/
+	screen->print("[BackIR]..............NOK", 5);
 
 	if (battery->hasStatus()){
 		String value = String((float)battery->getStatus());
@@ -195,4 +228,7 @@ void print(){
 		}else{
 		screen->print("[CommandServo].........NO", 8);
 	}*/
+
+	// flush
+	screen->flush();
 }

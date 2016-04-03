@@ -4,7 +4,7 @@
 
 #include "ScreenTask.h"
 
-U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NO_ACK);
+U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NO_ACK | U8G_I2C_OPT_FAST);
 
 ScreenTask::ScreenTask() :
 Task() {
@@ -23,6 +23,10 @@ Task() {
 	}
 	// init 
 	this->clear();
+}
+
+void ScreenTask::setAutoFlush(bool autoFlush){
+	this->autoFlush = autoFlush;
 }
 
 void ScreenTask::execute(String command){
@@ -45,12 +49,18 @@ int ScreenTask::print(String string, int position){
 	if (string.length() > (SCREEN_WIDTH / CHAR_WIDTH)){
 		string = string.substring(0, 22) + "...";
 	}
-	if (position == 0)
-		this->content[this->currentRow] = string;
-	else
-		this->content[position] = string;
+	int targetPosition = this->currentRow;
+	if (position != 0)
+		targetPosition = position;
 
-	this->draw();
+	if (0 == string.compareTo(this->content[targetPosition]))
+		return targetPosition;
+
+	this->content[targetPosition] = string;
+
+	// if auto-flush = true => draw the content , else need call flush method to draw
+	if (this->autoFlush)
+		this->draw();
 
 	if (position == 0)
 		return this->currentRow;
@@ -106,6 +116,10 @@ void ScreenTask::clear(){
 		this->content[i] = String("");
 	}
 	this->currentRow = 0;
+}
+
+void ScreenTask::flush(){
+	this->draw();
 }
 
 void ScreenTask::draw(){

@@ -15,6 +15,8 @@ class ScreenTask: public Task{
 public:
 	ScreenTask();
 
+	void flush();
+	void setAutoFlush(bool autoFlush = true);
 	int print(String string, int position = 0);
 	void println(String string);
 	void out(String string);
@@ -24,6 +26,7 @@ private:
 	char *message;
 	String content[9];
 	int currentRow;
+	bool autoFlush = true;
 
 	virtual void execute(String command);
 	virtual void draw();

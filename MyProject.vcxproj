@@ -59,7 +59,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\MedInvention\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.10\cores\arduino;C:\Users\MedInvention\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.10\variants\mega;C:\Users\MedInvention\Documents\Arduino\MyProject;C:\Program Files\Arduino\libraries;C:\Users\MedInvention\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.10\libraries;C:\Program Files\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\krtcqjaw.3xm\Micro Platforms\default\debuggers;C:\Users\MedInvention\Documents\Arduino\libraries;C:\Program Files\Arduino\hardware\tools\avr/avr/include/;C:\Program Files\Arduino\hardware\tools\avr//avr/include/avr/;C:\Program Files\Arduino\hardware\tools\avr/lib\gcc\avr\4.8.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MedInvention\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.10\cores\arduino;C:\Users\MedInvention\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.10\variants\mega;C:\Users\MedInvention\Documents\Arduino\MyProject;C:\Program Files\Arduino\libraries;C:\Users\MedInvention\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.10\libraries;C:\Program Files\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\krtcqjaw.3xm\Micro Platforms\default\debuggers;C:\Users\MedInvention\Documents\Arduino\libraries;C:\Users\MedInvention\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.10\cores\arduino;C:\Users\MedInvention\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.10\variants\mega;C:\Users\MedInvention\Documents\Arduino\libraries\U8glib_Arduino-1.18.1\src;C:\Program Files\Arduino\libraries\Servo\src;C:\Users\MedInvention\Documents\Arduino\libraries\Adafruit-Motor-Shield-library-master;C:\Program Files\Arduino\libraries;C:\Users\MedInvention\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.10\libraries;C:\Program Files\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\krtcqjaw.3xm\Micro Platforms\default\debuggers;C:\Users\MedInvention\Documents\Arduino\libraries;C:\Program Files\Arduino\hardware\tools\avr/avr/include/;C:\Program Files\Arduino\hardware\tools\avr//avr/include/avr/;C:\Program Files\Arduino\hardware\tools\avr/lib\gcc\avr\4.8.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>C:\Users\MedInvention\Documents\Arduino\MyProject\__vm\.MyProject.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <PreprocessorDefinitions>__AVR_ATmega2560__;F_CPU=16000000L;ARDUINO=10607;ARDUINO_AVR_MEGA2560;ARDUINO_ARCH_AVR;__cplusplus=201103L;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Battery.h" />
+    <ClInclude Include="Bluetooth.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="CommandServoTask.h" />
     <ClInclude Include="IR.h" />
@@ -91,6 +92,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Battery.cpp" />
+    <ClCompile Include="Bluetooth.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="CommandServoTask.cpp" />
     <ClCompile Include="IR.cpp" />
