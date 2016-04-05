@@ -1,7 +1,7 @@
 // Car.h
 
-#ifndef _CAR_h
-#define _CAR_h
+#ifndef _CARTASK_h
+#define _CARTASK_h
 
 #include <AFMotor.h>
 #include "Arduino.h"
@@ -16,15 +16,15 @@ const int ROTATE_RIGHT = 2;
 
 const int NO_TIMER = -1;
 
-class Car : public Task{
+class CarTask : public Task{
 
 public:
-	Car();
+	CarTask();
 
 	void forward(int speed = NORM, int timer = NO_TIMER);
 	void stop();
 	void backward(int speed = NORM, int timer = NO_TIMER);
-	void rotate(int direction = ROTATE_RIGHT, int angle = 90, int speed = NORM);
+	void rotate(int direction = ROTATE_RIGHT, int angle = 90);
 	bool onRotation();
 	String direction();
 private:

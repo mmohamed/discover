@@ -79,7 +79,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Battery.h" />
     <ClInclude Include="Bluetooth.h" />
-    <ClInclude Include="Car.h" />
+    <ClInclude Include="CarTask.h" />
     <ClInclude Include="CommandServoTask.h" />
     <ClInclude Include="IR.h" />
     <ClInclude Include="LedTask.h" />
@@ -93,7 +93,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Battery.cpp" />
     <ClCompile Include="Bluetooth.cpp" />
-    <ClCompile Include="Car.cpp" />
+    <ClCompile Include="CarTask.cpp" />
     <ClCompile Include="CommandServoTask.cpp" />
     <ClCompile Include="IR.cpp" />
     <ClCompile Include="LedTask.cpp" />

@@ -2,9 +2,9 @@
 // 
 // 
 
-#include "Car.h"
+#include "CarTask.h"
 
-Car::Car() :
+CarTask::CarTask() :
 Task() {
 	this->backLeft = new AF_DCMotor(1, MOTOR12_64KHZ);
 	this->backRight = new AF_DCMotor(2, MOTOR12_64KHZ);
@@ -23,7 +23,7 @@ Task() {
 	this->isRotated = false;
 }
 
-void Car::execute(String command){
+void CarTask::execute(String command){
 	unsigned long now = millis();
 
 	if (this->timer != NO_TIMER && (now - this->lastStartAt) > this->timer){
@@ -39,14 +39,15 @@ void Car::execute(String command){
 	}
 }
 
-bool Car::onRotation(){
+bool CarTask::onRotation(){
 	return this->isRotated;
 }
 
-void Car::rotate(int direction, int angle, int speed){
+void CarTask::rotate(int direction, int angle){
+	int speed = FAST;
 	this->setSpeed(speed);
-	// if in slow mode 1 degree => 2 millis
-	int rotationTimer = angle * 2;
+	// if in slow mode 1 degree => 12 millis
+	int rotationTimer = angle * 12;
 	if (speed == NORM)
 		rotationTimer = (int)rotationTimer * 0.75;
 	if (speed == FAST)
@@ -72,7 +73,7 @@ void Car::rotate(int direction, int angle, int speed){
 	this->isRotated = true;
 }
 
-void Car::setSpeed(int speed){
+void CarTask::setSpeed(int speed){
 	if (speed > 255)
 		speed = 255;
 
@@ -82,7 +83,7 @@ void Car::setSpeed(int speed){
 	this->backLeft->setSpeed(speed);
 }
 
-void Car::forward(int speed, int timer){
+void CarTask::forward(int speed, int timer){
 	this->setSpeed(speed);
 	//set timer limit
 	this->timer = timer;
@@ -91,7 +92,7 @@ void Car::forward(int speed, int timer){
 	this->set(BACKWARD);
 }
 
-void Car::backward(int speed, int timer){
+void CarTask::backward(int speed, int timer){
 	this->setSpeed(speed);
 	//set timer limit
 	this->timer = timer;
@@ -100,20 +101,20 @@ void Car::backward(int speed, int timer){
 	this->set(FORWARD);
 }
 
-void Car::stop(){
+void CarTask::stop(){
 	this->timer = NO_TIMER;
 	this->isRotated = false;
 	this->set(RELEASE);
 }
 
-void Car::set(int direction){
+void CarTask::set(int direction){
 	this->lastLeftStatus = this->leftStatus;
 	this->lastRightStatus = this->rightStatus;
 	this->leftStatus = direction;
 	this->rightStatus = direction;
 }
 
-String Car::direction(){
+String CarTask::direction(){
 	if (this->leftStatus != this->rightStatus)
 		return String("ROTATE");
 	if (this->leftStatus == RELEASE)

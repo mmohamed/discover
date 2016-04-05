@@ -24,11 +24,6 @@ Ultrasound::Ultrasound(int lap, int trigPin, int echoPin) : Task(lap){
 }
 
 void Ultrasound::execute(String command){
-	/*digitalWrite(this->trigPin, HIGH);
-	delayMicroseconds(10);
-	digitalWrite(this->trigPin, LOW);
-	long readed = pulseIn(this->echoPin, HIGH);
-	this->lastReaded = readed / 5.8;*/
 	if (this->status == SLEEP){
 		digitalWrite(this->trigPin, HIGH);
 		this->lastTriggered = micros();

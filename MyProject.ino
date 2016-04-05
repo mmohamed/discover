@@ -7,7 +7,7 @@
 #include "Ultrasound.h"
 #include "IR.h"
 #include "Battery.h"
-#include "Car.h"
+#include "CarTask.h"
 #include "Bluetooth.h"
 
 Application app;
@@ -26,45 +26,42 @@ ScreenTask *screen;
 //MainServoTask *autoServo;
 
 Battery *battery;
-Car *car;
+CarTask *car;
 
 Bluetooth *bridge;
+
+const int MODE_AUTO = 1;
+const int MODE_CMD = 2;
+
+int mode = MODE_AUTO;
 
 void setup() {
 
 	app.init();
 
 	screen = new ScreenTask();
-	
 	//led = new LedTask(100);
-
 	//autoServo = new MainServoTask(5000);
 	//commandServo = new CommandServoTask();
-	
 	frontUltrasound = new Ultrasound(5, 53, 52);
 	rightUltrasound = new Ultrasound(5, 47, 46);
 	leftUltrasound = new Ultrasound(5, 49, 48);
-
 	//backObstacle = new IR(50);
 	frontObstacle = new IR(51);
 
 	battery = new Battery(1000, A7);
-	car = new Car();
+	car = new CarTask();
 	bridge = new Bluetooth(50);
 
 	screen->start();
 	//led->start();
-	
 	//autoServo->start();
 	//commandServo->start();
-	
 	frontUltrasound->start();
 	rightUltrasound->start();
 	leftUltrasound->start();
-
 	frontObstacle->start();
 	//backObstacle->start();
-
 	battery->start();
 	car->start();
 	bridge->start();
@@ -72,10 +69,8 @@ void setup() {
 	app.registerDebugger(screen);
 
 	//app.registerTask(led);
-	
 	//app.registerTask(autoServo);
 	//app.registerTask(commandServo);
-	
 	app.registerTask(frontUltrasound);
 	app.registerTask(rightUltrasound);
 	app.registerTask(leftUltrasound);
@@ -96,12 +91,37 @@ void loop() {
 
 	print();
 
-	//process();
+	modeSwitch();
 
-	processWithBridge();
+	if (mode == MODE_AUTO){
+		processAuto();
+	}else if(mode == MODE_CMD){
+		processOnCommand();
+	}
 }
 
-void processWithBridge()
+void modeSwitch()
+{
+	if (bridge->get() != ""){
+		
+		String command = bridge->get();
+		command.toUpperCase();
+		command.trim();
+
+		if (command == "AUTO" && mode != MODE_AUTO){
+			mode = MODE_AUTO;
+			bridge->set("Switch mode for Auto");
+		}
+		else if (command == "CMD" && mode != MODE_CMD){
+			mode = MODE_CMD;
+			bridge->set("Switch mode for Command");
+		}
+	}
+}
+/*
+* Command process
+*/
+void processOnCommand()
 {
 	if (bridge->get() != ""){ // has command
 		String command = bridge->get();
@@ -109,14 +129,22 @@ void processWithBridge()
 		command.trim();
 
 		if (command == "GO"){
-			bridge->set("Go");
+			bridge->set("Go for 1000ms");
 			car->forward(FAST, 1000);
 		}
 		else if (command == "BACK"){
-			bridge->set("Back");
+			bridge->set("Back for 1000ms");
 			car->backward(FAST, 1000);
 		}
-		else{
+		else if (command == "RR"){
+			bridge->set("Rotation for 90d or right");
+			car->rotate(ROTATE_RIGHT);
+		}
+		else if (command == "RL"){
+			bridge->set("Rotation for 90d or left");
+			car->rotate(ROTATE_LEFT);
+		}
+		else if(command !="CMD" && command != "AUTO"){
 			car->stop();
 			bridge->set("unknown command ! => "+command);
 		}
@@ -124,9 +152,9 @@ void processWithBridge()
 }
 
 /*
-* Master process
+* Auto-process
 */
-void process(){
+void processAuto(){
 
 	// get of reader distance on front
 	long frontMesure = frontUltrasound->hasMesure() ? frontUltrasound->getReaded() : 99999999;
@@ -143,7 +171,7 @@ void process(){
 	else{
 		if (mesure > 500){
 			car->forward(FAST);
-		}else if (mesure < 500 && mesure > 30){
+		}else if (mesure < 500 && mesure > 50){
 			car->forward(SLOW);
 		}
 		else{
@@ -218,6 +246,14 @@ void print(){
 	}
 
 	screen->print("[Car]............." + car->direction(), 7);
+
+	String m = "NOK";
+	if (mode == MODE_AUTO)
+		m = "AUTO";
+	else
+		m = "COMMAND";
+
+	screen->print("[Mode]............." + m, 8);
 
 	/*if (commandServo->hasCommand()){
 		String command = commandServo->getCommand();

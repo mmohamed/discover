@@ -48,10 +48,10 @@
     <ClInclude Include="Battery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Car.h">
+    <ClInclude Include="Bluetooth.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bluetooth.h">
+    <ClInclude Include="CarTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -83,10 +83,10 @@
     <ClCompile Include="Battery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Car.cpp">
+    <ClCompile Include="Bluetooth.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bluetooth.cpp">
+    <ClCompile Include="CarTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
